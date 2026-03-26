@@ -14,6 +14,13 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       
+      # Bước 1b: Login to Docker Hub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+      
       # Bước 2: Build & Push Docker image
       - name: Build and Push Docker image
         uses: docker/build-push-action@v5
@@ -23,8 +30,6 @@ jobs:
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/nguyendinhkhanh:latest
             ${{ secrets.DOCKER_USERNAME }}/nguyendinhkhanh:${{ github.sha }}
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
       
       # Bước 3: Triển khai lên DevOps Classroom (Slot S2)
       - name: Triển khai lên DevOps Classroom
